@@ -5,7 +5,7 @@ Requirements: (1) Node (2) NPM (2) Bower (run npm install -g bower) (3) Mongodb
 Barebones MTwirk App. 
 
 1. Clone the git repo
-2. cd/MTwirk && npm install  (This might take long and download a lot of stuff but its mostly for the development)
+2. cd/MTwirk && npm install  (This might take long and download a lot of stuff but its mostly for development)
 3. cd/app && bower install 
 4. ./mk                      (This is a convenience script for compiling/copying JST and SCSS)
 5. sudo mongod
