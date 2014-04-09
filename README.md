@@ -29,5 +29,5 @@ TIMELINE:
 GOALS:
 - payments hardcoded
 - integrate Twitter
-
-
+- Backend: Abhi, Dima (Backbone)
+- Frontend: Salem, Mitra, Neha (Angular)
