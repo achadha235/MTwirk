@@ -1,3 +1,0 @@
-grunt jst;
-cp .tmp/scripts/templates.js ./scripts/;
-
