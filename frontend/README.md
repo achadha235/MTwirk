@@ -29,4 +29,4 @@ This app is built using the yeoman/bower/grunt development environment,
 and uses Angular for all sorts of front-end goodness.
 
 
-[logo]:"./app/images/fedora.png"
+[logo]:app/images/fedora.png
