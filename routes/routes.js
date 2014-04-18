@@ -25,10 +25,17 @@ module.exports = function (app, passport) {
 	  })
 	);
 
-
 	app.get('/error', function (req, res){
 		res.json({ success: false });
-	})
+	});
+
+
+
+
+// REST API
+
+
+// request: 
 
 
 

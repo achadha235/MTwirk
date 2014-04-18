@@ -48,7 +48,6 @@ module.exports = function(passport) {
                                 return done(null, user);
                             });
                         }
-
                         return done(null, user); // user found, return that user
                     } else {
                         var newUser                 = new User();

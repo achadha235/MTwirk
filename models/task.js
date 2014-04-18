@@ -6,16 +6,17 @@ var mongoose = require('mongoose');
 */
 
 var taskSchema = mongoose.Schema({
-  numTasks      : {type: Number, min: 1}, // number of hits posted
-  numAssign     : {type: Number, min: 1}, // number of tasks one user can do
-  lifetime      : {type: Number, min: 0}, // how long the tasks is available (in seconds)
-  reward        : {type: Number, min: 0}, // base payment for one task (dollars)
-  duration      : {type: Number, min: 0, default: 300}, // how long a worker will be able to work on a single task (seconds)
-  approvalDelay : {type: Number, min: 0}, // how long after task completion before worker is automatically paid
-  description   :  String,
-  keywords      : [String],
-  data          : mongoose.Schema.Types.Mixed,
-  type          : String // type of task
+    owner         : { type: mongoose.Schema.Types.ObjectId, ref:'User' }
+    numTasks      : {type: Number, min: 1}, // number of hits posted
+    numAssign     : {type: Number, min: 1}, // number of tasks one user can do
+    lifetime      : {type: Number, min: 0}, // how long the tasks is available (in seconds)
+    reward        : {type: Number, min: 0, default: 0}, // base payment for one task (dollars)
+    duration      : {type: Number, min: 0, default: 300}, // how long a worker will be able to work on a single task (seconds)
+    approvalDelay : {type: Number, min: 0}, // how long after task completion before worker is automatically paid
+    description   :  String,
+    keywords      : [String],
+    data          : mongoose.Schema.Types.Mixed,
+    type          : String // type of task
 });
 
 // description must be less than 120 chars
