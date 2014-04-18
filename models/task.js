@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 */
 
 var taskSchema = mongoose.Schema({
-    owner         : { type: mongoose.Schema.Types.ObjectId, ref:'User' }
+    owner         : { type: mongoose.Schema.Types.ObjectId, ref:'User' },
     numTasks      : {type: Number, min: 1}, // number of hits posted
     numAssign     : {type: Number, min: 1}, // number of tasks one user can do
     lifetime      : {type: Number, min: 0}, // how long the tasks is available (in seconds)

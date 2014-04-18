@@ -46,7 +46,7 @@ app.configure(function(){
 	app.use(flash());
 
 	restify.serve(app, User, {middleware: isAuthenticated, plural: false, lowercase: true});
-	restify.serve(app, Task);	
+	restify.serve(app, Task, {middleware: isAuthenticated, plural: false, lowercase: true});	
 
 });
 
