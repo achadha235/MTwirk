@@ -3,9 +3,7 @@ var LocalStrategy    = require('passport-local').Strategy;
 var TwitterStrategy  = require('passport-twitter').Strategy;
 
 var User = require('../models/user');
-var Worker = require('../models/worker');
 var Task = require('../models/task');
-var Requester = require('../models/requester');
 
 // Drop (REMOVE THIS)
 var dbg = true;

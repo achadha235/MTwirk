@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
 
+/* Types of task
+  Image - includes an image of some kind
+  Custom - link to external site/survey for task
+*/
+
 var taskSchema = mongoose.Schema({
   numTasks      : {type: Number, min: 1}, // number of hits posted
   numAssign     : {type: Number, min: 1}, // number of tasks one user can do
@@ -9,6 +14,8 @@ var taskSchema = mongoose.Schema({
   approvalDelay : {type: Number, min: 0}, // how long after task completion before worker is automatically paid
   description   :  String,
   keywords      : [String],
+  data          : mongoose.Schema.Types.Mixed,
+  type          : String // type of task
 });
 
 // description must be less than 120 chars
