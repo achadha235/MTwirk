@@ -15,3 +15,6 @@ npm-debug.log
 app/bower_components/*
 !app/bower_components/dist/css/bootstrap-theme.css
 node_modules
+
+.DS_Store
+.tmp
