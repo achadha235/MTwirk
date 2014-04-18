@@ -1,0 +1,58 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> MTwirk | Home </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="app/styles/main.css">
+        <link rel='stylesheet' href="app/bower_components/sass-bootstrap/dist/css/bootstrap-theme.css"> </link>
+        <!-- endbuild -->
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="app/bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-static-top" id='appNav' role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">MTwirk</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class='active' id='accountButton'> <a href="/connect/twitter">Connect With Twitter </a></li>
+            </div>
+          </div>
+        </div>
+
+        <div class='container-fluid' id='mainContainer'>
+
+                <div class="jumbotron">
+                  <h1 id='statusBox' >Welcome to MTwirk</h1>
+                  <p> MTwirk = Mechanical Turk + Twitter</p>
+                  <p><a class="btn btn-primary btn-lg" role="button">Requester</a></p>
+                  <p><a class="btn btn-primary btn-lg" role="button">Worker / Tweeter</a></p>
+
+                </div>
+
+        </div>
+
+
+        <!-- build:js scripts/main.js -->
+        <script data-main="app/scripts/main" src="app/bower_components/requirejs/require.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>
