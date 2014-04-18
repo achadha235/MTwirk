@@ -1,7 +1,7 @@
 Informant
 =========
 
-Informant is MTwirk's cross platform [buzzword] [buzzword] mobile app.
+Informant is MTwirk's cross platform web app.
 
 ![Informant logo][logo]
 
