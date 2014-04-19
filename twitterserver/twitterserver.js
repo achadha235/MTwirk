@@ -7,8 +7,7 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 var restify = require("express-restify-mongoose");
-var twitter = require('ntwitter');
-
+var twitter = require('ntwitter'); // https://github.com/AvianFlu/ntwitter
 var twit = new twitter({
   consumer_key: 'RLBtBZOdvllHApo2QQrRcA',
   consumer_secret: 'wAvVUeUzjYGO30mdJ4typVKHWSlgnJNadEuVQD84U',
@@ -65,7 +64,6 @@ requestToTweet("")
 
 
 */
-
 
 
 
