@@ -11,14 +11,14 @@ Installing
 To get this up and running for development, do the following:
 
 ```bash
-	#clone the repo
+	# clone the repo
 	git clone https://github.com/achadha235/MTwirk.git
 	cd MTwirk/frontend
 
-	#install dependencies
+	# install dependencies
 	npm install
 
-	#run tests, start watching for code changes, and serve the app
+	# run tests, start watching for code changes, and serve the app
 	grunt serve
 ```
 
