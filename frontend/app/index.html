@@ -9,6 +9,8 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
@@ -21,7 +23,7 @@
   </head>
   <body ng-app="informant">
     <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -83,5 +85,18 @@
         <script src="scripts/controllers/signup.js"></script>
         <script src="scripts/controllers/navbar.js"></script>
         <!-- endbuild -->
+  <script type="text/javascript" charset="utf-8">
+    // Shim standalone mode for android
+    if(!window.navigator.hasOwnProperty("standalone")) {
+      window.navigator.standalone = (screen.height-document.documentElement.clientHeight<40)
+    }
+
+    // Check if we're in standalone mode.
+    if(window.navigator.standalone) {
+      // Standlone mode woo!
+    } else {
+      // Not standalone mode.
+    }
+  </script>
 </body>
 </html>
