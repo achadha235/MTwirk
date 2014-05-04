@@ -9,9 +9,9 @@ var userSchema = mongoose.Schema({
     },
     // active tasks from worker perspective
     tasksActive      : { type: [mongoose.Schema.Types.ObjectId], ref:'Task' },
-
     // active tasks from requester perspective
     tasksRequested   : { type: [mongoose.Schema.Types.ObjectId], ref:'Task' },
+    results          : { type: [mongoose.Schema.Types.ObjectId], ref: "TaskResult"}, // Tasks completed by the user
 
     dateRegistered   : { type: Date, default: Date.now },
     status           : { type: String, default: "new"},

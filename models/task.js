@@ -16,7 +16,8 @@ var taskSchema = mongoose.Schema({
     description   :  String,
     keywords      : [String],
     data          : mongoose.Schema.Types.Mixed,
-    type          : String // type of task
+    type          : String, // type of task
+    tag           : String, // An arbitrary 4 char string thats not currently in-use
 });
 
 // description must be less than 120 chars

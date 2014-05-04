@@ -15,20 +15,123 @@ var twit = new twitter({
   access_token_secret: 'w2ESUSuPphQnarq9FFpqeT97Ksc1ZvqGrnvnnwrahs16m'
 });
 
+var User = require('../models/user');
+var Task = require("../models/task");
+var TaskResult = require("../models/taskresult");
+
+var cache = {};
+var activeTasks = {};
+
+
+
+
+
 var parameters = {
-	rementionName: "Mtwirk"
+	rementionName: "Mtwirk",
+	credentialVerification: undefined,
 }
 
-twit
-	.verifyCredentials(function (err, data) {
-	console.log (data);
-})
+console.log("LOG: Connecting to Twitter...")
+twit.verifyCredentials( function (err, data) {
+	if (err){
+		console.log("ERROR: There was an error: ", err);
+	} else {
+		console.log("LOG: Connected to Twitter!");
+		parameters.credentialVerification = data;
+	}
+});
+
+twit.stream('user', {track:'Mtwirk'}, function(stream) {
+	stream.on('data', function (data) {
+		console.log("LOG: Recieved Data.");
+		if (data.id){
+			console.log("LOG: Caching object...");
+			var timeStamp = new Date()
+			cache[data.id_str] = {data: data, timestap: timeStamp};
+			console.log("LOG: Cached Twitter Object ", data.id_str, cache[data.id_str].data.text);
+		}
+		handleTwitterData(data);
+	});
+	stream.on('end', function (response) {
+	// Handle a disconnection
+	});
+	stream.on('destroy', function (response) {
+	// Handle a 'silent' disconnection from Twitter, no end/error event fired
+	});
+});
+
+function handleTwitterData(data){
+	if (data.user && data.text){
+		console.log(data);
+		console.log("LOG: Processing data for ", data.user.screen_name, " Text: ", data.text);
+		var parsedTaskResult = parseTwitterResult(data);
+		if (parsedTaskResult.valid === true){
+			console.log("Valid", parsedTaskResult.valid);
+			// 2. Save the result to the databas
+
+			var newTaskResult = TaskResult(parsedTaskResult);
+			newTaskResult.save(function (err){
+				if (err){
+					console.log("LOG: Error");
+				} else {
+					console.log("LOG: Task result saved");
+				}
+			});
+		}
+	}
+}
+
+
+
+
+// Returns a TaskResult object from Twitter Data
+function parseTwitterResult(data){
+	var result = {
+		tag: null,
+		valid: false, 
+		tag: null,
+		hasTaskTag: false,
+		hasMtwirkTag: false,
+		data: null
+	};
+
+	function isTaskTag(tag) { return /^_(?=\w{4})/.test(tag)}			
+	function isMtwirkTag(tag) { return (tag === "mtwirk")}
+	var tagsMtwirk = false;
+	var taskTag = "";
+	for (var i = 0; i < data.entities.hashtags.length; i++){
+		var tag = data.entities.hashtags[i];
+		if (isTaskTag(tag.text)){
+			result.tag = tag.text;
+			result.valid = true;
+			result.hasTaskTag = true;
+		}
+		if (isMtwirkTag(tag.text)){
+			result.hasMtwirkTag = true;
+		}
+	}
+	if (result.hasTaskTag){ 
+		result.data = data;
+		result.data.user 	= result.data.user.id_str;
+	}
+	return result;
+}
+
+function parseFacebookResults(data){
+
+} /* ?? */
+
+
+function processPendingResults(){}
 
 
 
 /* Streams we need
 	1. All hashtags #mt
 */
+
+
+
 
 
 
@@ -41,6 +144,7 @@ mongoose.connect(dbAddress);
 
 var User = require('../models/user');
 var Task = require("../models/task");
+var TaskResult = require("../models/taskresult")
 
 var express = require('express');
 var flash    = require('connect-flash');
@@ -49,21 +153,54 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
 
-// MTwirk Server for making Requests for Twitter
+// MTwirk Request API
 
 /* HTTP API
 POST /sendMessage - {request: , user: } 
 POST /publishJob - publish a users request to Twitter. Responses 
 	- 400 if account dosnt have sufficient funds or
 		   Twitter 
-
-
 Internals:
 requestToTweet("")
-
-
-
 */
+
+app.post("/sendMessage", function (req, res){
+	/* if (isRequested(req.body)){
+		var result = parseResult
+	} */
+	User.findOne({id: req.user.id}, function (err, user){
+		if (err){
+			console.log("LOG: An error occured", err);
+		} else {
+			console.log("LOG: User found. Sending message to ", user.twitter.username, " using Mtwirk", "data: ")
+		}
+	})
+	res.send(500);
+});
+
+function isRequester(data){
+	return true;
+}
+
+function isAuthenticated(res, req, next){
+	if (req.isAuthenticated()){
+		return next();		
+	} else {
+		res.send(402);
+	}
+}
+
+function balanceSufficient(res, req, next){
+	return next();
+	/*if (req.user.balance >= 0){
+
+	}*/
+}
+
+
+
+
+
 
 
 
@@ -81,7 +218,7 @@ app.configure(function(){
 	app.use(express.cookieParser()); 
 	app.use(express.bodyParser()); 
 	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' })); 
-	
+
 });
 
 
