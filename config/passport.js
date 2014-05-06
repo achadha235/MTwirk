@@ -4,10 +4,15 @@ var TwitterStrategy  = require('passport-twitter').Strategy;
 
 var User = require('../models/user');
 var Task = require('../models/task');
+var TaskResult = require('../models/taskresult');
 
 // Drop (REMOVE THIS)
 var dbg = true;
-if (dbg) User.remove({}, function (err) {console.log('DEBUG: User collection removed.')});
+if (dbg) {
+  User.remove({}, function (err) {console.log('DEBUG: User collection removed.')});
+  Task.remove({}, function (err) {console.log('DEBUG: Task collection removed.')});
+  TaskResult.remove({}, function (err) {console.log('DEBUG: TaskResult collection removed.')});
+}
 
 // Keys/Secrets
 var configAuth = require('./auth');
