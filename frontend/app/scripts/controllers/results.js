@@ -6,16 +6,16 @@ angular.module('informant')
     $scope.task = {};
     $scope.results = [];
 
-    $.getJSON("/me", function(data) {
+    $.getJSON('/me', function(data) {
       if (!data || !data.loggedIn) {
-        console.log("Redirecting...");
+        console.log('Redirecting...');
         $scope.$apply(function(){
-          $location.path("/");
+          $location.path('/');
         });
       }
     });
 
-    $.getJSON('/api/v1/task/' + $routeParams.result + "?populate=results", function (data) {
+    $.getJSON('/api/v1/task/' + $routeParams.result + '?populate=results', function (data) {
       console.log(data);
       if (data) {
         $scope.$apply(function(){
@@ -24,9 +24,9 @@ angular.module('informant')
       }
       if (data.results) {
         data.results.forEach(function(id, idx) {
-          $.getJSON('/api/v1/task')
+          $.getJSON('/api/v1/task');
         });
-      };
+      }
     });
 
 

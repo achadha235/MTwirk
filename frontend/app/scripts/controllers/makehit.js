@@ -3,25 +3,39 @@
 var scrollToBottom;
 
 angular.module('informant')
-  .controller('MakehitCtrl', function ($scope) {
+  .controller('MakehitCtrl', function ($scope, $location) {
 
     $scope.user = {};
 
     // Make sure we're logged in.
-    $.getJSON("/me", function(data) {
+    $.getJSON('/me', function(data) {
       console.log(data);
       if (!data || !data.loggedIn) {
         $scope.$apply(function(){
-          $location.path("/");
+          $location.path('/');
         });
       } else {
         $scope.$apply(function() {
           $scope.user = data.user;
         });
       }
-
     });
 
+    // Make it twirk
+    $scope.makeHit = function() {
+      var newTask = {
+        owner: $scope.user._id,
+        numTasks: $scope.numTasks,
+        reward: $scope.reward,
+        approvalDelay: 86400, // 1 day
+        description: $scope.description,
+        type: $scope.type
+      };
+
+      $.post('/api/task', newTask, function(data) {
+        console.log(data);
+      });
+    };
 
 
     // Get height of body in different browsers
