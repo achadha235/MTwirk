@@ -9,10 +9,10 @@
 
 <div class="row">
 	<div class="col-md-6 col-md-offset-3" ng-show="task.numTasks <= task.results.length">
-		<a href="#" class="btn btn-lg btn-primary btn-block">These responses look good!</a>
+		<a href="#/hits" class="btn btn-lg btn-primary btn-block">These responses look good!</a>
 		<br>
 		<center>
-			<span class="help-text">Click <span class="glyphicon glyphicon-remove-circle"></span> to remove any bad responses</span>
+<!-- 			<span class="help-text">Click <span class="glyphicon glyphicon-remove-circle"></span> to remove any bad responses</span> -->
 		</center>
 	</div>
 	<div class="col-md-6 col-md-offset-3" ng-hide="task.numTasks <= task.results.length">
@@ -25,8 +25,8 @@
 		<div class="list-group">
 			<a class="list-group-item" ng-repeat="result in task.results">
 				<p>
-					<span class="pull-right" style="font-size:1.2em"><span class="glyphicon glyphicon-remove-circle"></span></span>
-					{{result.data.response}}
+<!-- 					<span class="pull-right" style="font-size:1.2em"><span class="glyphicon glyphicon-remove-circle"></span></span> -->
+					{{result.data}}
 				</p>
 			</a>
 			<!--a class="list-group-item">

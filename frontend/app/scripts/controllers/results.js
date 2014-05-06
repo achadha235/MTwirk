@@ -22,11 +22,6 @@ angular.module('informant')
           $scope.task = data;
         });
       }
-      if (data.results) {
-        data.results.forEach(function(id, idx) {
-          $.getJSON('/api/v1/task');
-        });
-      }
     });
 
 
