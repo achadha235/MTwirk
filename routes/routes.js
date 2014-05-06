@@ -116,7 +116,7 @@ app.get('/api/task', function (req, res){
 });
 
 app.post('/api/task', isAuthenticated, function (req, res) {
-    console.log("Werre creating new guy", req.user)
+    console.log("Were creating new guy", req.user)
 
     var task;
     var user = req.user;
@@ -172,9 +172,7 @@ app.put('/api/task/:id', function (req, res) {
     });
 });
 
-
 // TaskResults
-
 app.get('/api/taskresult', function (req, res){
 	return TaskResult.find(function (err, task) {
 		if (!err) {
@@ -227,8 +225,6 @@ app.put('/api/taskresult/:id', function (req, res) {
     });
 });
 
-
-
 function isAuthenticated(req, res, next){
 	if (req.user){
 		return next()
@@ -237,9 +233,5 @@ function isAuthenticated(req, res, next){
 	}
 }
 
-
-
-
-
-
 }
+

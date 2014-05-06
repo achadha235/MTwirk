@@ -148,7 +148,7 @@ function handleTwitterData(data){
 								task.results.push(newTaskResult)
 								task.save(function (err){
 									if (err === null) {
-										twit.newDirectMessage(data.direct_message.sender.id, "Thank you for completing task " + parsedTaskResult.tag, function (err){
+										twit.newDirectMessage(data.direct_message.sender.id, "Thank you! Your response has been recieved and we will let you know when the requestor has reviewed it." + parsedTaskResult.tag, function (err){
 											console.log(err)
 										})
 									} else {
@@ -200,9 +200,6 @@ function parseTwitterResult(data){
 	}
 	return result;
 }
-
-
-
 
 
 
@@ -311,10 +308,7 @@ function addDummyData() {
                     tag: data.tag
                 });
 
-                task.save(function(err) {
-                  task.createTweet();
-                });
-
+                task.save();
             }
         });
     }
