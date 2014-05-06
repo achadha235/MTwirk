@@ -3,6 +3,14 @@ module.exports = function (app, passport) {
 	var Task = require('../models/task');
 	var TaskResult = require('../models/taskresult');
 
+	var twitter = require('ntwitter'); // https://github.com/AvianFlu/ntwitter
+	var twit = new twitter({
+		consumer_key: 'RLBtBZOdvllHApo2QQrRcA',
+		consumer_secret: 'wAvVUeUzjYGO30mdJ4typVKHWSlgnJNadEuVQD84U',
+		access_token_key: '2369737250-Jisy0DdIayprPfY4QPY6PPLhzKmLrmhDWVDIsw6',
+		access_token_secret: 'w2ESUSuPphQnarq9FFpqeT97Ksc1ZvqGrnvnnwrahs16m'
+	});
+
 	app.post('/login', passport.authenticate('twitter', {
 		successRedirect : '/#/account',
 		failureRedirect : '/#/login',
@@ -110,7 +118,6 @@ app.get('/api/task', function (req, res){
 });
 
 app.post('/api/task', isAuthenticated, function (req, res) {
-
     var task;
     var user = req.user;
     task = new Task(req.body);
@@ -118,18 +125,29 @@ app.post('/api/task', isAuthenticated, function (req, res) {
 		task.tag = generateTag();
 
     User.findOne({_id: req.user._id}, function (err, user){
-    	user.tasksRequested.push(task)
-    	user.save()
+    	user.tasksRequested.push(task);
+    	user.save();
+		});
+
+    task.save(function (err) {
+        if (!err) {
+						var twitterText = task.createTweet();
+						twit.updateStatus(twitterText, function(err, data) {
+							if (err) console.log(err);
+							console.log(data);
+						});
+
+            return console.log("task created");
+        } else {
+            return console.log(err);
+        }
     });
 
     return res.send(task);
 });
 
-
 app.get('/api/task/:id', function (req, res) {
-    return Task.findOne({_id: req.params.id})
-		.populate("results")
-		.exec(function (err, task) {
+    return Task.findById(req.params.id, function (err, task) {
         if (!err) {
             return res.send(task);
         } else {
@@ -137,7 +155,6 @@ app.get('/api/task/:id', function (req, res) {
         }
     });
 });
-
 
 app.put('/api/task/:id', function (req, res) {
     return Task.findById(req.params.id, function (err, task) {
