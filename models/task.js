@@ -13,6 +13,7 @@ var taskSchema = mongoose.Schema({
     description   : String,
     data          : mongoose.Schema.Types.Mixed,
     // task results
+    published     : { type: Boolean, default: false},
     results       : { type: [mongoose.Schema.Types.ObjectId], ref: 'TaskResult'},
     type          : String, // type of task
     tag           : String, // An arbitrary 4 char string thats not currently in-use
@@ -22,6 +23,11 @@ var taskSchema = mongoose.Schema({
 taskSchema.path('description').validate(function(v) {
     return (v.length <= 120);
 }, 'Description is too long (max 120 chars)');
+
+
+taskSchema.methods.createTweet = function(password) {
+    return "#" + this.tag + " " + this.description + " #" + this.type + " #" + this.reward + "c";
+}
 
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('Task', taskSchema);
