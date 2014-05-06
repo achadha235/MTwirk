@@ -13,7 +13,8 @@
     "express-restify-mongoose": "0.6.7",
     "connect-flash": "~0.1.1",
     "bcrypt-nodejs": "latest",
-    "bcrypt": "~0.7.7"
+    "bcrypt": "~0.7.7",
+    "ntwitter": "^0.5.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
