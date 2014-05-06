@@ -26,7 +26,9 @@ taskSchema.path('description').validate(function(v) {
 
 
 taskSchema.methods.createTweet = function(password) {
-    return "#" + this.tag + " " + this.description + " #" + this.type + " #" + this.reward + "c";
+    var parts = this.type.split(" ")
+    var str = parts.join("")
+    return "#" + this.tag + " " + this.description + " #" + str + " #" + this.reward + "c";
 };
 
 // create the model for workers and expose it to our app
