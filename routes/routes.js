@@ -146,8 +146,11 @@ app.post('/api/task', isAuthenticated, function (req, res) {
     return res.send(task);
 });
 
+
 app.get('/api/task/:id', function (req, res) {
-    return Task.findById(req.params.id, function (err, task) {
+    return Task.findOne({_id: req.params.id})
+		.populate("results")
+		.exec(function (err, task) {
         if (!err) {
             return res.send(task);
         } else {
@@ -155,6 +158,7 @@ app.get('/api/task/:id', function (req, res) {
         }
     });
 });
+
 
 app.put('/api/task/:id', function (req, res) {
     return Task.findById(req.params.id, function (err, task) {
