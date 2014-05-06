@@ -6,8 +6,7 @@ var User = require('../models/user');
 var Task = require('../models/task');
 
 // Drop (REMOVE THIS)
-var dbg = true;
-if (dbg) User.remove({}, function (err) {console.log('DEBUG: User collection removed.')});
+var dbg = false;
 
 // Keys/Secrets
 var configAuth = require('./auth');

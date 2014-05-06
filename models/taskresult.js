@@ -7,8 +7,10 @@ var mongoose = require('mongoose');
 */
 
 var taskResultSchema = mongoose.Schema({
+	owner         : { type: mongoose.Schema.Types.ObjectId, ref:'User' },
     tag           : String, // An arbitrary 4 char string thats not currently in-use
-    data          : mongoose.Schema.Types.Mixed
+    data          : String,
+    worker        : String,
 });
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('TaskResult', taskResultSchema);
