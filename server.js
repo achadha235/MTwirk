@@ -11,6 +11,8 @@ var restify = require("express-restify-mongoose");
 
 mongoose.connection.on('connected', function () {
  	console.log('Mongoose default connection open to ' + dbAddress);
+ 	console.log("Adding dummy data...");
+ 	addDummyData();
 });
 
 mongoose.connect(dbAddress);
@@ -18,6 +20,7 @@ mongoose.connect(dbAddress);
 var User = require('./models/user');
 var Task = require("./models/task");
 var TaskResult = require("./models/taskresult")
+
 
 var express = require('express');
 var flash    = require('connect-flash');
@@ -29,19 +32,21 @@ require('./config/passport')(passport);
 var app = express();
 
 
+
 app.configure(function(){
 	app.set("port", process.env.PORT || 3000)
-	app.use(express.logger('dev')); 
-	app.use(express.cookieParser()); 
-	app.use(express.bodyParser()); 
-	app.set('view engine', 'ejs'); 
-	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' })); 
-	
+	app.use(express.logger('dev'));
+	app.use(express.cookieParser());
+	app.use(express.bodyParser());
+	app.set('view engine', 'ejs');
+	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' }));
+
 	app.use("/", express.static(__dirname + "/frontend/app"));
 
 	app.use(passport.initialize());
-	app.use(passport.session()); 
+	app.use(passport.session());
 	app.use(flash());
+
 });
 
 require('./routes/routes.js')(app, passport);
@@ -51,7 +56,7 @@ require('./routes/routes.js')(app, passport);
 // });
 
 app.get( '/app/*' , function (req, res, next) {
-    var file = req.params[0]; 
+    var file = req.params[0];
     res.sendfile( __dirname + '/app/' + file );
 });
 
@@ -201,3 +206,114 @@ function parseTwitterResult(data){
 
 
 
+function addDummyData() {
+    var user1 = new User({
+        name: {
+            first: 'Jim',
+            last: 'Schwartz'
+        }
+    })
+    var user2 = new User({
+        name: {
+            first: 'Worker',
+            last: 'Bob'
+        }
+    });
+
+    var names = [{
+        first: 'Jim',
+        last: 'Schwartz'
+    }, {
+        first: 'Worker',
+        last: 'Bob'
+    }, {
+        first: 'Jordan',
+        last: 'Lop'
+    }, {
+        first: 'Seth',
+        last: 'Little'
+    }, {
+        first: 'Alice',
+        last: 'Cry'
+    }, ];
+
+    var tasks = [{
+        description: "Good place to get coffee",
+        type: "Short answer",
+        tag: "ABCD"
+    }, {
+        description: "Good place to get food",
+        type: "Short answer",
+        tag: "FAWD"
+    }, {
+        description: "Favorite color",
+        type: "Short answer",
+        tag: "GDSE"
+    }, {
+        description: "Favorite band",
+        type: "Short answer",
+        tag: "FEFS"
+    }, {
+        description: "New good movie",
+        type: "Short answer",
+        tag: "GRSF"
+    }, {
+        description: "What's a good TV show",
+        type: "Short answer",
+        tag: "DSDF"
+    }, {
+        description: "What is the meaning of life",
+        type: "Short answer",
+        tag: "KFOK"
+    }, {
+        description: "Commander data",
+        type: "Short answer",
+        tag: "LWOQ"
+    }, {
+        description: "How big is the universe",
+        type: "Short answer",
+        tag: "POEJ"
+    }, {
+        description: "Where can I sleep in Gates",
+        type: "Short answer",
+        tag: "KFEI"
+    }, ];
+
+    var response = [
+        "Peets", "Starbucks", "Chipotle", "Taco Bell", "Red", "Blue", "Radiohead", "Drake", "Wolf of Wall Street", "The Matrix", "Breaking Bad",
+        "Game of Thrones", "Nothing", "Coding lines on lines on lines", "What?", "Exactly.", "Too big", "Not big enough",
+        "not the 6th floor", "hide somewhere"
+    ];
+
+    // create users
+    for (var i = 0; i < 5; i++) {
+        var user = new User({
+            name: {
+                first: names[i].first,
+                last: names[i].last
+            }
+        });
+        user.save(function (err) {
+            if (err) console.log(err);
+
+            // Create tasks 
+            for (var j = 0; j < 10; j++) {
+                // create a task
+                var data = tasks[j];
+                var numTasks = Math.floor((Math.random() * 10) + 1);
+                var reward = Math.floor((Math.random() * 100) + 1);
+                var task = new Task({
+                    owner: user._id,
+                    numTasks: numTasks,
+                    reward: reward,
+                    description: data.description,
+                    type: data.type,
+                    tag: data.tag
+                });
+
+                task.save();
+
+            }
+        });
+    }
+}

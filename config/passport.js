@@ -4,9 +4,11 @@ var TwitterStrategy  = require('passport-twitter').Strategy;
 
 var User = require('../models/user');
 var Task = require('../models/task');
+var TaskResult = require('../models/taskresult');
 
 // Drop (REMOVE THIS)
 var dbg = false;
+
 
 // Keys/Secrets
 var configAuth = require('./auth');

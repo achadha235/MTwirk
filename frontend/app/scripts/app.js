@@ -24,7 +24,7 @@ angular.module('informant', [
         templateUrl: 'views/hits.html',
         controller: 'HitsCtrl'
       })
-      .when('/results', {
+      .when('/results/:result', {
         templateUrl: 'views/results.html',
         controller: 'ResultsCtrl'
       })

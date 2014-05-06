@@ -4,16 +4,16 @@ module.exports = function (app, passport) {
 	var TaskResult = require('../models/taskresult');
 
 	app.post('/login', passport.authenticate('twitter', {
-		successRedirect : '/#/account', 
-		failureRedirect : '/#/login', 
-		failureFlash : true 
+		successRedirect : '/#/account',
+		failureRedirect : '/#/login',
+		failureFlash : true
 	}));
 
 	app.get('/login', function (req, res){
 		if (req.user){
 			res.redirect('/#/hits');
 		} else {
-			res.redirect('/#/login')
+			res.redirect('/#/login');
 		}
 	});
 
@@ -23,11 +23,19 @@ module.exports = function (app, passport) {
 
 	app.get('/auth/twitter/callback',
 	  passport.authenticate('twitter', {
-		successRedirect : '/#/hits', 
-		failureRedirect : '/#/login', 
+		successRedirect : '/#/hits',
+		failureRedirect : '/#/login',
 		failureFlash : true
 	  })
 	);
+
+	app.get('/me', function(req, res) {
+		if (!!req.user) {
+			res.json({user: req.user, loggedIn: true});
+		} else {
+			res.json({error: "User not logged in", loggedIn: false});
+		}
+	});
 
 	app.get('/error', function (req, res){
 		res.json({ success: false });
@@ -191,6 +199,7 @@ app.put('/api/taskresult/:id', function (req, res) {
         });
     });
 });
+
 
 
 
