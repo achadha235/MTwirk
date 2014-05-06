@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-
 /* Types of task
   Image - includes an image of some kind
   Custom - link to external site/survey for task
@@ -8,27 +7,21 @@ var mongoose = require('mongoose');
 var taskSchema = mongoose.Schema({
     owner         : { type: mongoose.Schema.Types.ObjectId, ref:'User' },
     numTasks      : {type: Number, min: 1}, // number of hits posted
-    numAssign     : {type: Number, min: 1}, // number of tasks one user can do
-    lifetime      : {type: Number, min: 0}, // how long the tasks is available (in seconds)
+    lifetime      : {type: Number, min: 0, default: 86400}, // how long the tasks is available (in seconds) (default =  1 day)
     reward        : {type: Number, min: 0, default: 0}, // base payment for one task (dollars)
-    duration      : {type: Number, min: 0, default: 300}, // how long a worker will be able to work on a single task (seconds)
     approvalDelay : {type: Number, min: 0}, // how long after task completion before worker is automatically paid
-    description   :  String,
-    keywords      : [String],
+    description   : String,
     data          : mongoose.Schema.Types.Mixed,
+    // task results
+    results       : { type: [mongoose.Schema.Types.ObjectId], ref: 'TaskResult'}
     type          : String, // type of task
     tag           : String, // An arbitrary 4 char string thats not currently in-use
 });
 
 // description must be less than 120 chars
 taskSchema.path('description').validate(function(v) {
-  return v.length <= 120;
+    return (v.length <= 120);
 }, 'Description is too long (max 120 chars)');
-
-// max of 3 keywords per task
-taskSchema.path('keywords').validate(function(words) {
-  return words.length <= 3;
-}, 'Too many keywords (max 3)');
 
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('Task', taskSchema);
