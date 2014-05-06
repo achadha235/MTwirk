@@ -2,13 +2,13 @@
 	<div class="col-md-6 col-md-offset-3">
 		<a ng-href="#/makeHit" class="btn btn-lg btn-primary btn-block"><strong>Create a hit</strong></a>
 		<hr>
-		<h4><center>Newly completed</center></h4>
+		<!--h4><center>Newly completed</center></h4>
 		<div class="list-group">
 			<a href="" class="list-group-item" style="background-color:#fcf8e3">
 				<strong class="text-info">Where's good coffee in Oakland?</strong>
 				<span class="glyphicon glyphicon-chevron-right pull-right"></span>
 			</a>
-		</div>
+		</div-->
 	</div>
 </div>
 
@@ -16,11 +16,11 @@
 	<div class="col-md-6 col-md-offset-3">
 		<h4><center>Active hits</center></h4>
 		<div class="list-group">
-			<a href="" class="list-group-item">
+			<a class="list-group-item" ng-repeat="task in user.tasksRequested" ng-show="task.results.length < task.numTasks" ng-href="#/results/{{task._id}}">
 				<p>
-					<strong>What should I get from this vending machine?</strong>
+					<strong>{{task.description}}</strong>
 				</p>
-				<small class="help-text">0 out of 3 responses</small>
+				<small class="help-text">{{task.results.length}} out of {{task.numTasks}} responses</small>
 			</a>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 	<div class="col-md-6 col-md-offset-3">
 		<h4><center>Completed hits</center></h4>
 		<div class="list-group">
-			<a href="" class="list-group-item">How do you say "cat" in French?
+			<!--a href="" class="list-group-item">How do you say "cat" in French?
 				<span class="glyphicon glyphicon-chevron-right pull-right"></span>
 			</a>
 			<a href="" class="list-group-item">What sort of flower is this?
@@ -43,6 +43,10 @@
 				<span class="glyphicon glyphicon-chevron-right pull-right"></span>
 			</a>
 			<a href="" class="list-group-item">Do you know the muffin man?
+				<span class="glyphicon glyphicon-chevron-right pull-right"></span>
+			</a-->
+			<a class="list-group-item" ng-repeat="task in user.tasksRequested" ng-hide="task.results.length < task.numTasks" ng-href="#/results/{{task._id}}">
+				{{task.description}}
 				<span class="glyphicon glyphicon-chevron-right pull-right"></span>
 			</a>
 		</div>

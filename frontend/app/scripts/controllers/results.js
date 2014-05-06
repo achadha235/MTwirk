@@ -15,8 +15,8 @@ angular.module('informant')
       }
     });
 
-    $.getJSON('/api/v1/task/' + $routeParams.result + '?populate=results', function (data) {
-      console.log(data);
+    $.getJSON('/api/task/' + $routeParams.result, function (data) {
+      console.log("task:", data);
       if (data) {
         $scope.$apply(function(){
           $scope.task = data;

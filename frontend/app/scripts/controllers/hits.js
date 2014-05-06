@@ -4,6 +4,8 @@ angular.module('informant')
   .controller('HitsCtrl', function ($scope, $location) {
 
     $scope.user = {};
+    $scope.active = [];
+    $scope.completed = [];
 
     $.getJSON('/me', function(data) {
       console.log(data);
