@@ -309,6 +309,7 @@ function addDummyData() {
                 });
 
                 task.save();
+
             }
         });
     }
