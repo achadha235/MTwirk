@@ -16,6 +16,18 @@ angular.module('informant', [
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl'
       })
+      .when('/makeHit', {
+        templateUrl: 'views/makehit.html',
+        controller: 'MakehitCtrl'
+      })
+      .when('/hits', {
+        templateUrl: 'views/hits.html',
+        controller: 'HitsCtrl'
+      })
+      .when('/results', {
+        templateUrl: 'views/results.html',
+        controller: 'ResultsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
