@@ -76,8 +76,8 @@ app.post('/api/user', function (req, res) {
 
 app.get('/api/user/:id', function (req, res) {
     return User.findOne({_id: req.params.id})
-			.populate("tasksRequested")
-			.exec(function (err, user) {
+		.populate("tasksRequested")
+		.exec(function (err, user) {
         if (!err) {
             return res.send(user);
         } else {
@@ -92,14 +92,16 @@ app.put('/api/user/:id', function (req, res) {
             console.log(req.body)
             user[key] = req.body[key]
         }
-        return user.save(function (err) {
-            if (!err) {
-                console.log("updated");
-            } else {
-                console.log(err);
-            }
-            return res.send(user);
-        });
+        if (user !== null){
+	        return user.save(function (err) {
+	            if (!err) {
+	                console.log("updated");
+	            } else {
+	                console.log(err);
+	            }
+	            return res.send(user);
+	        });        	
+        }
     });
 });
 
