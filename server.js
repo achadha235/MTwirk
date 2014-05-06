@@ -69,7 +69,6 @@ app.get( '/app/*' , function (req, res, next) {
 var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log("MTwirk server server listening on port " + app.get('port'));
 });
-<<<<<<< HEAD
 
 function addDummyData() {
   var user1 = new User({name: {first: 'Jim', last: 'Schwartz'}})
@@ -154,5 +153,3 @@ function addDummyData() {
 };
 
 setTimeout(addDummyData, 1000);
-=======
->>>>>>> d5ffbe14b655f4a102684c004840fe565672b41f
