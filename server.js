@@ -240,7 +240,7 @@ function addDummyData() {
         tag: "ABCD"
     }, {
         description: "Good place to get food",
-        type: "Short answer",
+        type: "ShortAnswer",
         tag: "FAWD"
     }, {
         description: "Favorite color",
