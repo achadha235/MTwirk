@@ -116,12 +116,11 @@ app.get('/api/task', function (req, res){
 });
 
 app.post('/api/task', isAuthenticated, function (req, res) {
-    console.log("Were creating new guy", req.user)
-
     var task;
     var user = req.user;
     task = new Task(req.body);
     task.owner = user.id;
+		task.tag = generateTag();
 
     User.findOne({_id: req.user._id}, function (err, user){
     	user.tasksRequested.push(task);
@@ -233,5 +232,19 @@ function isAuthenticated(req, res, next){
 	}
 }
 
+// creates a 4 letter key
+function generateTag() {
+	var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+								 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+								 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+	var key;
+  for (var i = 0; i < 4; i++) {
+		var index = Math.floor((Math.random() * letters.length) + 1);
+			key += letters[index];
+	}
+
+	return key;
 }
 
+}
