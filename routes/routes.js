@@ -17,8 +17,8 @@ module.exports = function (app, passport) {
 		}
 	});
 
-	app.get('/connect/twitter', passport.authorize('twitter', { 
-		scope : 'email' 
+	app.get('/connect/twitter', passport.authorize('twitter', {
+		scope : 'email'
 	}));
 
 	app.get('/auth/twitter/callback',
@@ -67,7 +67,9 @@ app.post('/api/user', function (req, res) {
 });
 
 app.get('/api/user/:id', function (req, res) {
-    return User.findById(req.params.id, function (err, user) {
+    return User.findOne({_id: req.params.id})
+			.populate("tasksRequested")
+			.exec(function (err, user) {
         if (!err) {
             return res.send(user);
         } else {
@@ -210,5 +212,4 @@ function isAuthenticated(req, res, next){
 }
 
 }
-
 

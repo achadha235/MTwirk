@@ -12,5 +12,7 @@ var taskResultSchema = mongoose.Schema({
     data          : String,
     worker        : String,
 });
+
+
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('TaskResult', taskResultSchema);

@@ -14,7 +14,7 @@ var taskSchema = mongoose.Schema({
     data          : mongoose.Schema.Types.Mixed,
     // task results
     published     : { type: Boolean, default: false},
-    results       : { type: [mongoose.Schema.Types.ObjectId], ref: 'TaskResult'},
+    results       : [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaskResult'}],
     type          : String, // type of task
     tag           : String, // An arbitrary 4 char string thats not currently in-use
 });
