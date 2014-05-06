@@ -22,10 +22,6 @@ var TaskResult = require("../models/taskresult");
 var cache = {};
 var activeTasks = {};
 
-
-
-
-
 var parameters = {
 	rementionName: "Mtwirk",
 	credentialVerification: undefined,
@@ -41,28 +37,25 @@ twit.verifyCredentials( function (err, data) {
 	}
 });
 
-twit.stream('user', {track:'Mtwirk'}, function(stream) {
+twit.stream('user', {track:'Mtwirk'}, function (stream) {
 	stream.on('data', function (data) {
 		console.log("LOG: Recieved Data.");
-		if (data.id){
-			console.log("LOG: Caching object...");
-			var timeStamp = new Date()
-			cache[data.id_str] = {data: data, timestap: timeStamp};
-			console.log("LOG: Cached Twitter Object ", data.id_str, cache[data.id_str].data.text);
-		}
 		handleTwitterData(data);
 	});
 	stream.on('end', function (response) {
+		console.log("LOG: Stream ended");
 	// Handle a disconnection
 	});
 	stream.on('destroy', function (response) {
-	// Handle a 'silent' disconnection from Twitter, no end/error event fired
+		console.log("LOG: Stream ended prematurely");
 	});
 });
 
 function handleTwitterData(data){
+	console.log(data);
+
+	// Check if the object has a user and some text
 	if (data.user && data.text){
-		console.log(data);
 		console.log("LOG: Processing data for ", data.user.screen_name, " Text: ", data.text);
 		var parsedTaskResult = parseTwitterResult(data);
 		if (parsedTaskResult.valid === true){
@@ -81,49 +74,25 @@ function handleTwitterData(data){
 	}
 }
 
-
-
-
 // Returns a TaskResult object from Twitter Data
-function parseTwitterResult(data){
+function saveTwitterResult(data){
 	var result = {
 		tag: null,
-		valid: false, 
-		tag: null,
-		hasTaskTag: false,
-		hasMtwirkTag: false,
 		data: null
 	};
-
-	function isTaskTag(tag) { return /^_(?=\w{4})/.test(tag)}			
+	function isTaskTag(tag) { return /^#(?=\w{4})/.test(tag)}			
 	function isMtwirkTag(tag) { return (tag === "mtwirk")}
-	var tagsMtwirk = false;
 	var taskTag = "";
+	var hasTag = false;
 	for (var i = 0; i < data.entities.hashtags.length; i++){
 		var tag = data.entities.hashtags[i];
 		if (isTaskTag(tag.text)){
-			result.tag = tag.text;
-			result.valid = true;
-			result.hasTaskTag = true;
+			result.tag = tag.text;	
+			// Find associated user and job and then save it to the __dirnam
 		}
-		if (isMtwirkTag(tag.text)){
-			result.hasMtwirkTag = true;
-		}
-	}
-	if (result.hasTaskTag){ 
-		result.data = data;
-		result.data.user 	= result.data.user.id_str;
 	}
 	return result;
 }
-
-function parseFacebookResults(data){
-
-} /* ?? */
-
-
-function processPendingResults(){}
-
 
 
 /* Streams we need
@@ -192,9 +161,6 @@ function isAuthenticated(res, req, next){
 
 function balanceSufficient(res, req, next){
 	return next();
-	/*if (req.user.balance >= 0){
-
-	}*/
 }
 
 
@@ -230,7 +196,3 @@ app.get( '/app/*' , function (req, res, next) {
 var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log("MTwirk server server listening on port " + app.get('port'));
 });
-
-
-
-
