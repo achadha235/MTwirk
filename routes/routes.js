@@ -100,7 +100,7 @@ app.put('/api/user/:id', function (req, res) {
 	                console.log(err);
 	            }
 	            return res.send(user);
-	        });        	
+	        });
         }
     });
 });
@@ -240,7 +240,7 @@ function generateTag() {
 								 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
 								 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-	var key;
+	var key = "";
   for (var i = 0; i < 4; i++) {
 		var index = Math.floor((Math.random() * letters.length) + 1);
 			key += letters[index];
