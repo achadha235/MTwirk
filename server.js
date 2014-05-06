@@ -43,6 +43,8 @@ app.configure(function(){
 	app.set('view engine', 'ejs'); 
 	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' })); 
 	
+	app.use("/", express.static(__dirname + "/frontend/app"));
+
 	app.use(passport.initialize());
 	app.use(passport.session()); 
 	app.use(flash());
@@ -54,9 +56,9 @@ app.configure(function(){
 
 require('./routes/routes.js')(app, passport);
 
-app.get('/', function (req, res){
-	res.sendfile(__dirname + "/mobile/app/views/main.html");
-});
+// app.get('/', function (req, res){
+// 	res.sendfile(__dirname + "/frontend/app");
+// });
 
 app.get( '/app/*' , function (req, res, next) {
     var file = req.params[0]; 
