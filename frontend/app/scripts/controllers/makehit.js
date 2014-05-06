@@ -6,6 +6,8 @@ angular.module('informant')
   .controller('MakehitCtrl', function ($scope, $location) {
 
     $scope.user = {};
+    $scope.errorMessage = "";
+    $scope.successMessage = "";
 
     // Make sure we're logged in.
     $.getJSON('/me', function(data) {
@@ -34,6 +36,22 @@ angular.module('informant')
 
       $.post('/api/task', newTask, function(data) {
         console.log(data);
+        if (!data._id) {
+          $scope.$apply(function() {
+            $scope.errorMessage = "Something went wrong. Please check your fields and try again";
+          });
+        } else {
+          $scope.$apply(function() {
+            $scope.successMessage = 'Your message has been posted!';
+            scrollToBottom();
+          });
+          setTimeout(function() {
+            $scope.$apply(function() {
+              scrollToTop(window.document.body, 0, 200);
+              $location.path('/hits');
+            });
+          }, 5000);
+        }
       });
     };
 

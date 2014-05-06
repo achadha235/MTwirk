@@ -27,7 +27,7 @@ taskSchema.path('description').validate(function(v) {
 
 taskSchema.methods.createTweet = function(password) {
     return "#" + this.tag + " " + this.description + " #" + this.type + " #" + this.reward + "c";
-}
+};
 
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('Task', taskSchema);
