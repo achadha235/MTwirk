@@ -105,16 +105,19 @@ app.get('/api/task', function (req, res){
 	});
 });
 
-app.post('/api/task', function (req, res) {
+app.post('/api/task', isAuthenticated, function (req, res) {
+    console.log("Werre creating new guy", req.user)
+
     var task;
+    var user = req.user;
     task = new Task(req.body);
-    task.save(function (err) {
-        if (!err) {
-            return console.log("task created");
-        } else {
-            return console.log(err);
-        }
+    task.owner = user.id;
+
+    User.findOne({_id: req.user._id}, function (err, user){
+    	user.tasksRequested.push(task)
+    	user.save()
     });
+
     return res.send(task);
 });
 
@@ -202,9 +205,13 @@ app.put('/api/taskresult/:id', function (req, res) {
 
 
 
-
-
-
+function isAuthenticated(req, res, next){
+	if (req.user){
+		return next()
+	} else {
+		res.send(403)
+	}
+}
 
 
 
