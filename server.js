@@ -29,28 +29,28 @@ var app = express();
 
 function isAuthenticated(req, res, next){
 	if (req.isAuthenticated()){
-		return next()
+		return next();
 	} else {
 		res.send(401);
 	}
 }
 
 app.configure(function(){
-	app.set("port", process.env.PORT || 3000)
-	app.use(express.logger('dev')); 
-	app.use(express.cookieParser()); 
-	app.use(express.bodyParser()); 
-	app.set('view engine', 'ejs'); 
-	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' })); 
-	
+	app.set("port", process.env.PORT || 3000);
+	app.use(express.logger('dev'));
+	app.use(express.cookieParser());
+	app.use(express.bodyParser());
+	app.set('view engine', 'ejs');
+	app.use(express.session({ secret: 'twirktwirktwirkmileymileytwirk' }));
+
 	app.use("/", express.static(__dirname + "/frontend/app"));
 
 	app.use(passport.initialize());
-	app.use(passport.session()); 
+	app.use(passport.session());
 	app.use(flash());
 
 	restify.serve(app, User, {middleware: isAuthenticated, plural: false, lowercase: true});
-	restify.serve(app, Task, {middleware: isAuthenticated, plural: false, lowercase: true});	
+	restify.serve(app, Task, {middleware: isAuthenticated, plural: false, lowercase: true});
 
 });
 
@@ -61,14 +61,10 @@ require('./routes/routes.js')(app, passport);
 // });
 
 app.get( '/app/*' , function (req, res, next) {
-    var file = req.params[0]; 
+    var file = req.params[0];
     res.sendfile( __dirname + '/app/' + file );
 });
 
 var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log("MTwirk server server listening on port " + app.get('port'));
 });
-
-
-
-
