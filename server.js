@@ -150,11 +150,11 @@ function handleTwitterData(data){
 									if (err === null) {
 										twit.newDirectMessage(data.direct_message.sender.id, "Thank you for completing task " + parsedTaskResult.tag, function (err){
 											console.log(err)
-										}) 		
+										})
 									} else {
 										twit.newDirectMessage(data.direct_message.sender.id, "There was an error ", function (err){
 											console.log(err)
-										}) 									
+										})
 										console.log(err)
 									}
 								})
@@ -163,8 +163,8 @@ function handleTwitterData(data){
 					} else {
 						twit.newDirectMessage(data.direct_message.sender.id, "Incorrect Task ID. Please ensure response correctly tagged.", function (err){
 							console.log(err)
-						}) 
-					}					
+						})
+					}
 				}
 			})
 			newTaskResult.save(function (err){
@@ -187,7 +187,7 @@ function parseTwitterResult(data){
 		valid: false
 	};
 
-	function isTaskTag(tag) { return /^[a-zA-Z]{4}$/i.test(tag)}			
+	function isTaskTag(tag) { return /^[a-zA-Z]{4}$/i.test(tag)}
 	var taskTag = "";
 	var hasTag = false;
 
@@ -195,7 +195,7 @@ function parseTwitterResult(data){
 		var tag = data.direct_message.entities.hashtags[i];
 		if (isTaskTag(tag.text)){
 			result.tag = tag.text;
-			result.valid = true	
+			result.valid = true
 		}
 	}
 	return result;
@@ -296,7 +296,7 @@ function addDummyData() {
         user.save(function (err) {
             if (err) console.log(err);
 
-            // Create tasks 
+            // Create tasks
             for (var j = 0; j < 10; j++) {
                 // create a task
                 var data = tasks[j];
@@ -311,7 +311,9 @@ function addDummyData() {
                     tag: data.tag
                 });
 
-                task.save();
+                task.save(function(err) {
+                  task.createTweet();
+                });
 
             }
         });

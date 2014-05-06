@@ -23,5 +23,10 @@ taskSchema.path('description').validate(function(v) {
     return (v.length <= 120);
 }, 'Description is too long (max 120 chars)');
 
+taskSchema.statics.createTweet = function() {
+  console.log(this);
+  return "#" + this.tag + " " + this.description + "#" + this.type + " #" + this.reward;
+}
+
 // create the model for workers and expose it to our app
 module.exports = mongoose.model('Task', taskSchema);
