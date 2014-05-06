@@ -5,6 +5,25 @@ var scrollToBottom;
 angular.module('informant')
   .controller('MakehitCtrl', function ($scope) {
 
+    $scope.user = {};
+
+    // Make sure we're logged in.
+    $.getJSON("/me", function(data) {
+      console.log(data);
+      if (!data || !data.loggedIn) {
+        $scope.$apply(function(){
+          $location.path("/");
+        });
+      } else {
+        $scope.$apply(function() {
+          $scope.user = data.user;
+        });
+      }
+
+    });
+
+
+
     // Get height of body in different browsers
     var getDocHeight = function () {
       return Math.max(
