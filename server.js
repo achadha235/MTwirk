@@ -1,4 +1,5 @@
 var dbAddress = "mongodb://localhost:27017";
+var auth = require("./config/auth");
 
 
 var http = require('http');
@@ -6,8 +7,6 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 var restify = require("express-restify-mongoose");
-
-
 
 mongoose.connection.on('connected', function () {
  	console.log('Mongoose default connection open to ' + dbAddress);
@@ -21,7 +20,6 @@ var User = require('./models/user');
 var Task = require("./models/task");
 var TaskResult = require("./models/taskresult")
 
-
 var express = require('express');
 var flash    = require('connect-flash');
 var passport = require('passport');
@@ -30,8 +28,6 @@ var LocalStrategy = require('passport-local').Strategy;
 require('./config/passport')(passport);
 
 var app = express();
-
-
 
 app.configure(function(){
 	app.set("port", process.env.PORT || 3000)
@@ -64,15 +60,13 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log("MTwirk server server listening on port " + app.get('port'));
 });
 
-
 var twitter = require('ntwitter'); // https://github.com/AvianFlu/ntwitter
 var twit = new twitter({
-	consumer_key: 'RLBtBZOdvllHApo2QQrRcA',
-	consumer_secret: 'wAvVUeUzjYGO30mdJ4typVKHWSlgnJNadEuVQD84U',
-	access_token_key: '2369737250-Jisy0DdIayprPfY4QPY6PPLhzKmLrmhDWVDIsw6',
-	access_token_secret: 'w2ESUSuPphQnarq9FFpqeT97Ksc1ZvqGrnvnnwrahs16m'
+	consumer_key: auth.twitterAuth.consumer_key,
+	consumer_secret: auth.twitterAuth.consumer_secret,
+	access_token_key: auth.twitterAuth.access_token_key,
+	access_token_secret: auth.twitterAuth.access_token_secret
 });
-
 
 var parameters = {
 	rementionName: "Mtwirk",

@@ -2,13 +2,13 @@ module.exports = function (app, passport) {
 	var User = require('../models/user');
 	var Task = require('../models/task');
 	var TaskResult = require('../models/taskresult');
-
+	var auth = require("../config/auth")
 	var twitter = require('ntwitter'); // https://github.com/AvianFlu/ntwitter
 	var twit = new twitter({
-		consumer_key: 'RLBtBZOdvllHApo2QQrRcA',
-		consumer_secret: 'wAvVUeUzjYGO30mdJ4typVKHWSlgnJNadEuVQD84U',
-		access_token_key: '2369737250-Jisy0DdIayprPfY4QPY6PPLhzKmLrmhDWVDIsw6',
-		access_token_secret: 'w2ESUSuPphQnarq9FFpqeT97Ksc1ZvqGrnvnnwrahs16m'
+		consumer_key: auth.twitterAuth.consumer_key,
+		consumer_secret: auth.twitterAuth.consumer_secret,
+		access_token_key: auth.twitterAuth.access_token_key,
+		access_token_secret: auth.twitterAuth.access_token_secret
 	});
 
 	app.post('/login', passport.authenticate('twitter', {
@@ -51,7 +51,7 @@ module.exports = function (app, passport) {
 
 // Rest API
 // Todo: security? later.
-app.get('/api/user', function (req, res){
+app.get('/api/user', isAuthenticated, function (req, res){
 	return User.find(function (err, user) {
 		if (!err) {
 			return res.send(user);
@@ -74,7 +74,7 @@ app.post('/api/user', function (req, res) {
     return res.send(user);
 });
 
-app.get('/api/user/:id', function (req, res) {
+app.get('/api/user/:id', isAuthenticated, isAuthorizedUser, function (req, res) {
     return User.findOne({_id: req.params.id})
 		.populate("tasksRequested")
 		.exec(function (err, user) {
@@ -86,28 +86,28 @@ app.get('/api/user/:id', function (req, res) {
     });
 });
 
-app.put('/api/user/:id', function (req, res) {
+app.put('/api/user/:id', isAuthenticated, isAuthorizedUser, function (req, res) {
     return User.findById(req.params.id, function (err, user) {
         for (key in req.body) {
             console.log(req.body)
             user[key] = req.body[key]
         }
         if (user !== null){
-	        return user.save(function (err) {
-	            if (!err) {
-	                console.log("updated");
-	            } else {
-	                console.log(err);
-	            }
-	            return res.send(user);
-	        });
-        }
+		    return user.save(function (err) {
+		        if (!err) {
+		            console.log("updated");
+		        } else {
+		            console.log(err);
+		        }
+		        return res.send(user);
+		    });
+		}
     });
 });
 
 
 // Tasks
-app.get('/api/task', function (req, res){
+app.get('/api/task', isAuthenticated,  function (req, res){
 	return Task.find(function (err, task) {
 		if (!err) {
 			return res.send(task);
@@ -131,23 +131,21 @@ app.post('/api/task', isAuthenticated, function (req, res) {
 
     task.save(function (err) {
         if (!err) {
-						var twitterText = task.createTweet();
-						twit.updateStatus(twitterText, function(err, data) {
-							if (err) console.log(err);
-							console.log(data);
-						});
-
+			var twitterText = task.createTweet();
+			twit.updateStatus(twitterText, function(err, data) {
+				if (err) console.log(err);
+				console.log(data);
+			});
             return console.log("task created");
         } else {
             return console.log(err);
         }
-    });
-
+    });	
     return res.send(task);
 });
 
 
-app.get('/api/task/:id', function (req, res) {
+app.get('/api/task/:id', isAuthenticated,  function (req, res) {
     return Task.findOne({_id: req.params.id})
 		.populate("results")
 		.exec(function (err, task) {
@@ -160,7 +158,7 @@ app.get('/api/task/:id', function (req, res) {
 });
 
 
-app.put('/api/task/:id', function (req, res) {
+app.put('/api/task/:id', isAuthenticated,  function (req, res) {
     return Task.findById(req.params.id, function (err, task) {
         for (key in req.body) {
             console.log(req.body);
@@ -178,7 +176,7 @@ app.put('/api/task/:id', function (req, res) {
 });
 
 // TaskResults
-app.get('/api/taskresult', function (req, res){
+app.get('/api/taskresult', isAuthenticated, function (req, res){
 	return TaskResult.find(function (err, task) {
 		if (!err) {
 			return res.send(task);
@@ -189,7 +187,7 @@ app.get('/api/taskresult', function (req, res){
 });
 
 
-app.post('/api/taskresult', function (req, res) {
+app.post('/api/taskresult', isAuthenticated, function (req, res) {
     var taskresult;
     taskresult = new TaskResult(req.body);
     taskresult.save(function (err) {
@@ -203,7 +201,7 @@ app.post('/api/taskresult', function (req, res) {
     return res.send(taskresult);
 });
 
-app.get('/api/taskresult/:id', function (req, res) {
+app.get('/api/taskresult/:id', isAuthenticated, function (req, res) {
     return TaskResult.findById(req.params.id, function (err, taskresult) {
         if (!err) {
         	// Update from twitter
@@ -214,7 +212,7 @@ app.get('/api/taskresult/:id', function (req, res) {
     });
 });
 
-app.put('/api/taskresult/:id', function (req, res) {
+app.put('/api/taskresult/:id', isAuthenticated, function (req, res) {
     return TaskResult.findById(req.params.id, function (err, taskresult) {
         for (key in req.body) {
             taskresult[key] = req.body[key]
@@ -237,6 +235,27 @@ function isAuthenticated(req, res, next){
 		res.send(403)
 	}
 }
+
+function isAuthorizedUser(req, res, next){
+	if (req.user.id === req.params.id){
+		return next()
+	} else {
+		res.send(403)
+	}
+}
+
+function isAuthorizedTask(req, res, next){
+	console.log("Checking if task authorized...")
+	for (var i = 0;i<req.user.tasksRequested.length; i++){
+		console.log(req.user.tasksRequested[i])
+		if (req.params.id === req.user.tasksRequested[i]) {
+			return next()
+		} 
+	}
+	return (403)
+}
+
+
 
 // creates a 4 letter key
 function generateTag() {

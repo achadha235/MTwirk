@@ -26,12 +26,13 @@ module.exports = function(passport) {
     });
 
     passport.use('twitter', new TwitterStrategy({
-        consumerKey     : configAuth.twitterAuth.consumerKey,
-        consumerSecret  : configAuth.twitterAuth.consumerSecret,
-        callbackURL     : configAuth.twitterAuth.callbackURL,
+        consumerKey     : configAuth.twitterAuth.consumer_key,
+        consumerSecret  : configAuth.twitterAuth.consumer_secret,
+        callbackURL     : configAuth.twitterAuth.callback_url,
         passReqToCallback : true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
 
     },
+    
     function (req, token, tokenSecret, profile, done) {
         process.nextTick(function() {
             if (!req.user) {
