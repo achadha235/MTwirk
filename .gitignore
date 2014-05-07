@@ -10,7 +10,7 @@ lib-cov
 pids
 logs
 results
-
+config/auth.js
 npm-debug.log
 app/bower_components/*
 !app/bower_components/dist/css/bootstrap-theme.css
